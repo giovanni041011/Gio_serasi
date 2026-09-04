@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page Angkatan SMA - Thursina</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --primary: #0284c7;
+            --secondary: #4f46e5;
+            --accent: #e11d48;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* NAVBAR KANAN ATAS */
+        nav {
+            background: #ffffff;
+            border-bottom: 2px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 30px; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+        .nav-links { display: flex; gap: 10px; list-style: none; }
+        .nav-links button {
+            background: transparent; border: none; padding: 8px 16px; border-radius: 8px;
+            color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .nav-links button.active, .nav-links button:hover { background: #e0f2fe; color: var(--primary); }
+
+        /* CONTAINER SYSTEM (TAB BASED) */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* CARD DESIGN */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        
+        .avatar { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto 15px; border: 3px solid var(--primary); }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .bio-item { font-size: 0.85rem; margin-bottom: 5px; color: var(--text-muted); }
+        .bio-item strong { color: var(--text); }
+
+        /* BUTTONS & FORM */
+        .btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .btn-edit { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); margin-top: 10px; width: 100%; }
+        .btn-edit:hover { background: #e2e8f0; }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .gallery-card { background: white; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+        .gallery-card img { width: 100%; height: 180px; object-fit: cover; }
+
+        /* CHATBOT & ADMIN PANEL */
+        .chat-box { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .chat-logs { height: 250px; overflow-y: auto; border: 1px solid var(--border); padding: 10px; border-radius: 8px; margin-bottom: 15px; background: #f8fafc; }
+        .chat-msg { margin-bottom: 10px; padding: 8px 12px; border-radius: 8px; max-width: 80%; }
+        .chat-msg.bot { background: #e0f2fe; color: #0369a1; }
+        .chat-msg.user { background: var(--secondary); color: white; margin-left: auto; }
+
+        .admin-box { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 20px; margin-top: 40px; text-align: center; }
+        
+        footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGASI KANAN ATAS -->
+    <nav>
+        <div class="logo-box"><i class="fa-solid fa-school"></i> CYBERIX THURSINA</div>
+        <ul class="nav-links">
+            <li><button class="active" onclick="switchTab('beranda', this)">Beranda</button></li>
+            <li><button onclick="switchTab('struktur', this)">Struktur</button></li>
+            <li><button onclick="switchTab('anggota', this)">Anggota (23)</button></li>
+            <li><button onclick="switchTab('prestasi', this)">Prestasi</button></li>
+            <li><button onclick="switchTab('rekreasi', this)">Kenangan & Rekreasi</button></li>
+            <li><button onclick="switchTab('bot', this)">Interactive Bot</button></li>
+            <li><button onclick="switchTab('kontak', this)">Contact & Masukan</button></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <!-- TAB 1: BERANDA -->
+        <div id="beranda" class="tab-content active">
+            <div class="card" style="text-align: center; padding: 40px;">
+                <h1 style="color: var(--primary); font-size: 2.2rem;" id="title-angkatan">ANGKATAN SERASI</h1>
+                <p style="color: var(--text-muted); margin-top: 10px;">Tahun Aktif: <strong id="estimasi">Tahun 2024-2027</strong></p>
+                <div style="margin-top: 20px;" class="card">
+                    <h3>Visi & Misi Angkatan</h3>
+                    <p id="misi-text">Menjadi angkatan yang kompak, berprestasi, serta unggul dalam ilmu pengetahuan dan keagamaan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: STRUKTUR (WALI KELAS, HALAQOH, KETUA) -->
+        <div id="struktur" class="tab-content">
+            <h2 style="margin-bottom: 20px;">Struktur & Pembimbing Angkatan</h2>
+            <div class="grid">
+                <!-- Wali Kelas -->
+                <div class="card">
+                    <div class="avatar"><img src="https://via.placeholder.com/150" id="img-walas"></div>
+                    <h3 id="nama-walas">Ali Mudhofir ,S.Pd,M.Pdi,Gr.</h3>
+                    <p style="color: var(--primary); font-size: 0.85rem;">Wali Kelas</p>
+                    <hr style="margin: 10px 0;">
+                    <div class="bio-item"><strong>TTL / Umur:</strong> <span id="ttl-walas">Jakarta, 12 Ags 1982 (44 Thn)</span></div>
+                    <div class="bio-item"><strong>Pendidikan:</strong> <span id="pend-walas">S2 Pendidikan</span></div>
+                    <div class="bio-item"><strong>Pekerjaan:</strong> <span id="pek-walas">Pengajar / Guru</span></div>
+                    <div class="bio-item"><strong>Alamat:</strong> <span id="alm-walas">Malang, Jawa Timur</span></div>
+                    <div class="bio-item"><strong>Telp:</strong> <span id="tlp-walas">081234567890</span></div>
+                    <button class="btn btn-edit" onclick="editData('walas')"><i class="fa-solid fa-pen"></i> Edit Data</button>
+                </div>
+
+                <!-- Wali Halaqoh -->
+                <div class="card">
+                    <div class="avatar"><img src="https://via.placeholder.com/150" id="img-halaqoh"></div>
+                    <h3 id="nama-halaqoh">Osama Al-Barra2:52 PM 9/4/2026.</h3>
+                    <p style="color: var(--primary); font-size: 0.85rem;">Wali Halaqoh</p>
+                    <hr style="margin: 10px 0;">
+                    <div class="bio-item"><strong>TTL / Umur:</strong> <span id="ttl-halaqoh">Solo, 05 Mei 1988 (38 Thn)</span></div>
+                    <div class="bio-item"><strong>Pendidikan:</strong> <span id="pend-halaqoh">S1 LIPIA</span></div>
+                    <div class="bio-item"><strong>Pekerjaan:</strong> <span id="pek-halaqoh">Guru Tahfidz</span></div>
+                    <div class="bio-item"><strong>Alamat:</strong> <span id="alm-halaqoh">Malang, Jawa Timur</span></div>
+                    <div class="bio-item"><strong>Telp:</strong> <span id="tlp-halaqoh">081399887766</span></div>
+                    <button class="btn btn-edit" onclick="editData('halaqoh')"><i class="fa-solid fa-pen"></i> Edit Data</button>
+                </div>
+
+                <!-- Ketua Angkatan -->
+                <div class="card">
+                    <div class="avatar"><img src="https://via.placeholder.com/150" id="img-ketua"></div>
+                    <h3 id="nama-ketua">Teguh Suryana.</h3>
+                    <p style="color: var(--primary); font-size: 0.85rem;">Ketua Angkatan</p>
+                    <hr style="margin: 10px 0;">
+                    <div class="bio-item"><strong>TTL / Umur:</strong> <span id="ttl-ketua">Jakarta, 14 Mei 2008 (18 Thn)</span></div>
+                    <div class="bio-item"><strong>NISN:</strong> <span id="nisn-ketua">0081234567</span></div>
+                    <div class="bio-item"><strong>Pendidikan:</strong> TK A, SD 1, SMP Thursina, SMA Thursina</div>
+                    <div class="bio-item"><strong>Mapel Favorit:</strong> Informatika / Coding</div>
+                    <div class="bio-item"><strong>Hobi / Cita:</strong> Coding / CEO Tech</div>
+                    <div class="bio-item"><strong>Target Univ:</strong> ITB - Teknik Informatika</div>
+                    <div class="bio-item"><strong>Motto:</strong> "Lead by Example"</div>
+                    <button class="btn btn-edit" onclick="editData('ketua')"><i class="fa-solid fa-pen"></i> Edit Data</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: ANGGOTA SISWA -->
+        <div id="anggota" class="tab-content">
+            <h2 style="margin-bottom: 20px;">Data 23 Anggota Siswa</h2>
+            <div class="grid" id="siswa-grid">
+                <!-- 23 Siswa di-generate otomatis via JS -->
+            </div>
+        </div>
+
+        <!-- TAB 4: PRESTASI KELAS -->
+        <div id="prestasi" class="tab-content">
+            <h2>Prestasi Angkatan</h2>
+            <div style="margin: 15px 0;">
+                <input type="file" id="up-prestasi" accept="image/*" style="display:none;" onchange="uploadFoto('prestasi-list', this)">
+                <button class="btn" onclick="document.getElementById('up-prestasi').click()"><i class="fa-solid fa-plus"></i> Tambah Foto Prestasi</button>
+            </div>
+            <div class="gallery-grid" id="prestasi-list">
+                <div class="gallery-card">
+                    <img src="https://via.placeholder.com/300x200?text=Juara+1+Olimpiade">
+                    <div style="padding: 10px;"><b>Juara 1 Sains</b><p style="font-size: 0.8rem;">Tahun 2025</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: REKREASI / KENANGAN -->
+        <div id="rekreasi" class="tab-content">
+            <h2>Momen Kenangan & Studi Tour</h2>
+            <div style="margin: 15px 0;">
+                <input type="file" id="up-rekreasi" accept="image/*" style="display:none;" onchange="uploadFoto('rekreasi-list', this)">
+                <button class="btn" style="background: var(--accent);" onclick="document.getElementById('up-rekreasi').click()"><i class="fa-solid fa-plus"></i> Upload Foto Rekreasi</button>
+            </div>
+            <div class="gallery-grid" id="rekreasi-list">
+                <div class="gallery-card">
+                    <img src="https://via.placeholder.com/300x200?text=Studi+Tour+Jogja">
+                    <div style="padding: 10px;"><b>Studi Tour Jogja</b><p style="font-size: 0.8rem;">Tahun 2025</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 6: AI INTERACTIVE BOT -->
+        <div id="bot" class="tab-content">
+            <h2 style="text-align: center; margin-bottom: 15px;">Cyberix AI Assistant</h2>
+            <div class="chat-box">
+                <div class="chat-logs" id="chat-logs">
+                    <div class="chat-msg bot">Halo! Saya AI Angkatan. Tanya saya seputar angkatan, wali kelas, atau ketua!</div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="chat-in" style="flex:1; padding: 8px; border-radius: 6px; border:1px solid var(--border);" placeholder="Ketik pertanyaan...">
+                    <button class="btn" onclick="tanyaBot()">Kirim</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 7: CONTACT & MASUKAN (TERKIRIM KE GMAIL) -->
+        <div id="kontak" class="tab-content">
+            <h2 style="margin-bottom: 15px;">Hubungi Kami & Masukan</h2>
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <p style="margin-bottom: 15px;"><strong>Narahubung Resmi:</strong> 085370180252</p>
+                <!-- Formspree untuk langsung mengirimkan isi pesan ke Gmail target -->
+                <form action="https://formspree.io/f/xv0zpjll" method="POST" onsubmit="redirectGmail(event)">
+                    <input type="hidden" name="_to" value="giovanni@ponpesthursina.id">
+                    <div style="margin-bottom: 10px;">
+                        <label>Nama Pemberi Masukan</label>
+                        <input type="text" name="nama" required style="width:100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label>Email Anda (Gmail)</label>
+                        <input type="email" name="email" required style="width:100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label>Saran / Masukan</label>
+                        <textarea name="pesan" rows="4" required style="width:100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);"></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Kirimkan ke Gmail</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- BOTTOM PANEL ADMIN RAHASIA -->
+        <div class="admin-box">
+            <h3><i class="fa-solid fa-lock"></i> Panel Akses Admin</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">Masukkan kata sandi untuk mengubah setelan penuh website & melatih AI Bot.</p>
+            <div style="display: flex; gap: 10px; justify-content: center; max-width: 400px; margin: 0 auto;">
+                <input type="password" id="pass-admin" placeholder="Masukkan Sandi Admin..." style="padding: 8px; border-radius: 6px; border: 1px solid var(--border); flex:1;">
+                <button class="btn" style="background: var(--text);" onclick="loginAdmin()">Masuk</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2026 Angkatan Serasi Thursina | Narahubung: 085370180252
+    </footer>
+
+    <!-- JAVASCRIPT SYSTEM -->
+    <script>
+        // Data AI Bot Kustom
+        let botMemory = {
+            "ketua": "Ketua Angkatan adalah Teguh Suryana.",
+            "walas": "Wali kelas adalah Ustadz Ali Mudhofir.",
+            "halaqoh": "Wali halaqoh adalah Osama Al-Barra",
+            "kontak": "Nomor Narahubung resmi adalah 085370180252."
+        };
+
+        // Switch Navigasi Tab (Tanpa Turun Ke Bawah)
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // Generate 23 Siswa Automatically
+        const siswaGrid = document.getElementById('siswa-grid');
+        for (let i = 1; i <= 23; i++) {
+            siswaGrid.innerHTML += `
+                <div class="card">
+                    <div class="avatar"><img src="https://via.placeholder.com/150" id="img-s-${i}"></div>
+                    <h3 id="nama-s-${i}">Siswa ${i}</h3>
+                    <p style="color:var(--primary); font-size:0.8rem;">Anggota Kelas</p>
+                    <hr style="margin:8px 0;">
+                    <div class="bio-item"><strong>NISN:</strong> <span id="nisn-s-${i}">008900${i}</span></div>
+                    <div class="bio-item"><strong>TTL / Umur:</strong> Malang, 10 Jan 2008 (18 Thn)</div>
+                    <div class="bio-item"><strong>Pendidikan:</strong> TK, SD, SMP, SMA Thursina</div>
+                    <div class="bio-item"><strong>Mapel Fav:</strong> Matematika / IT</div>
+                    <div class="bio-item"><strong>Univ & Jurusan Impian:</strong> UI - Kedokteran</div>
+                    <div class="bio-item"><strong>Alamat:</strong> Jl. Kampus Thursina No. ${i}</div>
+                    <div class="bio-item"><strong>Motto:</strong> "Pantang Menyerah"</div>
+                    <button class="btn btn-edit" onclick="editSiswaDirect(${i})"><i class="fa-solid fa-pen"></i> Edit Data Siswa</button>
+                </div>
+            `;
+        }
+
+        // Fungsi Edit Data Bebas Oleh Pengunjung
+        function editData(tipe) {
+            const namaBaru = prompt("Masukkan Nama Baru:");
+            if (namaBaru) document.getElementById(`nama-${tipe}`).innerText = namaBaru;
+        }
+
+        function editSiswaDirect(id) {
+            const namaBaru = prompt(`Edit Nama Siswa ${id}:`);
+            const nisnBaru = prompt(`Edit NISN Siswa ${id}:`);
+            if (namaBaru) document.getElementById(`nama-s-${id}`).innerText = namaBaru;
+            if (nisnBaru) document.getElementById(`nisn-s-${id}`).innerText = nisnBaru;
+        }
+
+        // Upload Foto
+        function uploadFoto(listId, input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(listId).innerHTML += `
+                        <div class="gallery-card">
+                            <img src="${e.target.result}">
+                            <div style="padding:10px;"><b>Foto Baru Upload</b><p style="font-size:0.8rem;">Tahun 2026</p></div>
+                        </div>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // AI Interactive Bot Chat
+        function tanyaBot() {
+            const input = document.getElementById('chat-in');
+            const logs = document.getElementById('chat-logs');
+            if(!input.value) return;
+
+            logs.innerHTML += `<div class="chat-msg user">${input.value}</div>`;
+            let q = input.value.toLowerCase();
+            input.value = '';
+
+            setTimeout(() => {
+                let ans = "Maaf, saya belum mempelajari hal tersebut. Tanya Admin untuk menambahkan perintah!";
+                for(let key in botMemory) {
+                    if(q.includes(key)) ans = botMemory[key];
+                }
+                logs.innerHTML += `<div class="chat-msg bot">${ans}</div>`;
+                logs.scrollTop = logs.scrollHeight;
+            }, 300);
+        }
+
+        // Sandi Admin System
+        function loginAdmin() {
+            const pass = document.getElementById('pass-admin').value;
+            // Kata Kunci Rahasia
+            if(pass === "APA TUJUANMU DATANG KE THURSINA") {
+                alert("Akses Admin Diterima! Kamu sekarang bisa melatih AI Bot.");
+                const kataKunci = prompt("Masukkan Kata Kunci Baru untuk AI (misal: 'jadwal'):");
+                const jawaban = prompt("Masukkan Jawaban AI untuk Kata Kunci tersebut:");
+                if(kataKunci && jawaban) {
+                    botMemory[kataKunci.toLowerCase()] = jawaban;
+                    alert("AI Berhasil Dilatih dengan Perintah Baru!");
+                }
+            } else {
+                alert("Kata Sandi Salah! Akses Ditolak.");
+            }
+        }
+
+        function redirectGmail(e) {
+            alert("Masukan Anda akan terkirim secara otomatis ke alamat Gmail: giovanni@ponpesthursina.id");
+        }
+    </script>
+</body>
+</html>
